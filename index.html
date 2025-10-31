@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Admin Dashboard - Creative Labs</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #1e3c72;
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--primary-gradient);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 35px;
+            font-size: 16px;
+        }
+
+        .security-badge {
+            background: var(--danger);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            margin-bottom: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-box button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .login-box button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: var(--danger);
+            margin-top: 15px;
+            display: none;
+            font-weight: 500;
+            background: #fff5f5;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .error-message.show { display: block; }
+
+        .dashboard-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 30px 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .dashboard-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #856404;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .dashboard-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #6c757d;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            color: var(--primary);
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table-header h2 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .submissions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .submissions-table thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .submissions-table th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .submissions-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+
+        .submissions-table tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .submissions-table tbody tr.unscored {
+            background: #fffbf0;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .badge.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge.unscored {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.audio-yes {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.audio-no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-view {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-view:hover {
+            background: #1a3461;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 99999;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 1100px;
+            width: 100%;
+            margin: auto;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .close-modal {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .info-section p {
+            margin: 10px 0;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .answers-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .answers-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .answer-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .answer-item.written {
+            border-left-color: #17a2b8;
+            background: #e8f7fa;
+        }
+
+        .answer-question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .answer-response {
+            color: #555;
+            margin: 8px 0;
+            padding-left: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .answer-response.written-text {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .audio-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .audio-section h3 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .audio-player {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .user-email {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="security-badge">
+                    <span>🔐</span>
+                    <span>SECURED ADMIN ACCESS</span>
+                </div>
+                <h1>HR Admin Panel</h1>
+                <p>Firebase Authentication Required</p>
+                <form id="loginForm">
+                    <input type="email" id="adminEmail" placeholder="Admin Email" required autocomplete="username">
+                    <input type="password" id="adminPassword" placeholder="Password" required autocomplete="current-password">
+                    <button type="submit" id="loginBtn">Access Dashboard</button>
+                </form>
+                <div class="error-message" id="loginError">❌ Authentication failed.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardPage" class="page">
+        <div class="dashboard-header">
+            <h1>📊 HR Assessment Dashboard</h1>
+            <p>Secured with Firebase Auth <span class="user-email" id="userEmail"></span></p>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="loadData()">
+                    <span>🔄</span>
+                    <span>Refresh Data</span>
+                </button>
+                <button class="btn btn-warning" onclick="scoreAllUnscored()" id="scoreBtn">
+                    <span>🎯</span>
+                    <span>Calculate Scores</span>
+                </button>
+                <button class="btn btn-success" onclick="downloadAll()">
+                    <span>📥</span>
+                    <span>Download All</span>
+                </button>
+                <button class="btn btn-danger" onclick="logout()">
+                    <span>🚪</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Submissions</h3>
+                    <div class="stat-value" id="totalSubs">0</div>
+                    <div style="font-size: 13px; color: #6c757d;">All time</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--success);">
+                    <h3>Passed</h3>
+                    <div class="stat-value" id="totalPassed" style="color: var(--success);">0</div>
+                    <div style="font-size: 13px; color: #6c757d;">70% or higher</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--danger);">
+                    <h3>Failed</h3>
+                    <div class="stat-value" id="totalFailed" style="color: var(--danger);">0</div>
+                    <div style="font-size: 13px; color: #6c757d;">Below 70%</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--warning);">
+                    <h3>Average Score</h3>
+                    <div class="stat-value" id="avgScore" style="color: var(--warning);">0%</div>
+                    <div style="font-size: 13px; color: #6c757d;">Mean percentage</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>All Submissions</h2>
+                </div>
+                <div id="tableContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading submissions...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Submission Details</h2>
+                <button class="close-modal" onclick="closeModal()">✕ Close</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, get, set, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCwulSy8UIY_DDF4A3fhiPNm4gJmbfg8Iw",
+            authDomain: "customer-service-assessm-1c9e5.firebaseapp.com",
+            databaseURL: "https://customer-service-assessm-1c9e5-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "customer-service-assessm-1c9e5",
+            storageBucket: "customer-service-assessm-1c9e5.firebasestorage.app",
+            messagingSenderId: "187392191155",
+            appId: "1:187392191155:web:4f88f966057e1b7815dec6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        function escapeHtml(unsafe) {
+            if (typeof unsafe !== 'string') return unsafe;
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function safeNumber(num) {
+            const parsed = parseInt(num);
+            return (isNaN(parsed) || parsed < 0 || parsed > 100) ? 0 : parsed;
+        }
+
+        function safeDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleString();
+            } catch {
+                return 'Invalid Date';
+            }
+        }
+
+        let allSubs = [];
+        let currentSub = null;
+        let currentUser = null;
+        let correctAnswers = [];
+
+        const questions = [
+            "What is the most important skill in customer service?",
+            "A customer is angry about a delayed delivery. What should you do FIRST?",
+            "What does 'active listening' mean in customer service?",
+            "How should you handle a customer request you cannot immediately fulfill?",
+            "What is the best way to end a customer service interaction?",
+            "A customer is using inappropriate language. What should you do?",
+            "What is the purpose of asking clarifying questions?",
+            "How should you prioritize multiple customer requests?",
+            "What should you do if you don't know the answer to a customer's question?",
+            "What is the key to building customer loyalty?",
+            "When should you escalate a customer issue to a supervisor?",
+            "What is the best approach to handling customer complaints?",
+            "How should you communicate with a customer who is hard to understand?",
+            "What does 'going the extra mile' mean in customer service?",
+            "How should you handle multiple tasks while assisting a customer?",
+            "What is the importance of product knowledge in customer service?",
+            "How should you respond to positive customer feedback?",
+            "What is the best way to handle an upset customer who wants a refund outside of policy?",
+            "Describe a time when you successfully handled a difficult customer situation. What was the problem, what actions did you take, and what was the outcome? (Minimum 100 words)",
+            "Imagine a customer contacts you saying they received the wrong product and they're very upset because it was meant as a gift. Walk us through exactly how you would handle this situation from start to finish. (Minimum 100 words)"
+        ];
+
+        const questionOptions = [
+            ["Speed of response", "Active listening and empathy", "Technical knowledge only", "Following scripts exactly"],
+            ["Explain company policies", "Acknowledge their frustration and apologize", "Transfer them to a manager", "Offer a discount immediately"],
+            ["Listening while doing other tasks", "Fully concentrating, understanding, and responding appropriately", "Waiting for your turn to speak", "Taking notes only"],
+            ["Say 'I don't know' and end the call", "Set clear expectations and follow up", "Make promises you might not keep", "Ignore the request"],
+            ["Hang up quickly", "Ask if there's anything else you can help with and thank them", "Just say goodbye", "Transfer to another department"],
+            ["Use inappropriate language back", "Remain professional and politely request respectful communication", "Hang up immediately", "Laugh it off"],
+            ["To confuse the customer", "To fully understand the customer's issue and provide accurate solutions", "To extend call time", "To show off knowledge"],
+            ["Random order", "By urgency and impact", "Ignore less important ones", "Only help familiar customers"],
+            ["Make up an answer", "Admit you don't know and find someone who does or research it", "Change the subject", "Blame the customer"],
+            ["Low prices only", "Consistent, reliable, and personalized service", "Fancy marketing", "Long phone calls"],
+            ["For every single request", "When you've exhausted your authority and resources", "Never escalate", "Only on Fridays"],
+            ["Defend the company immediately", "Listen, empathize, apologize, and offer solutions", "Blame other departments", "Minimize the issue"],
+            ["Pretend you understand", "Ask politely for clarification and confirm understanding", "Get frustrated and transfer", "Speak louder"],
+            ["Working overtime", "Exceeding expectations and providing exceptional service", "Doing the bare minimum", "Selling more products"],
+            ["Multitask constantly", "Focus fully on the customer, then handle other tasks", "Ask the customer to wait indefinitely", "Rush through everything"],
+            ["Not important at all", "Helps provide accurate information and build trust", "Only for sales people", "Can be ignored"],
+            ["Ignore it", "Thank them and share it with your team", "Ask for money", "Take all credit yourself"],
+            ["Immediately say no", "Explain the policy empathetically and explore alternative solutions", "Give refund without checking", "Argue about the policy"],
+            null,
+            null
+        ];
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('userEmail').textContent = escapeHtml(user.email);
+                document.getElementById('loginPage').classList.remove('active');
+                document.getElementById('dashboardPage').classList.add('active');
+                loadData();
+            } else {
+                currentUser = null;
+                document.getElementById('loginPage').classList.add('active');
+                document.getElementById('dashboardPage').classList.remove('active');
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('loginError');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Authenticating...';
+            errorMsg.classList.remove('show');
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error('Login error:', error);
+                errorMsg.textContent = '❌ ' + escapeHtml(error.message);
+                errorMsg.classList.add('show');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Access Dashboard';
+            }
+        });
+
+        window.logout = function() {
+            if (confirm('Are you sure you want to logout?')) {
+                signOut(auth).then(() => {
+                    document.getElementById('adminEmail').value = '';
+                    document.getElementById('adminPassword').value = '';
+                });
+            }
+        };
+
+        async function loadCorrectAnswers() {
+            try {
+                const snapshot = await get(ref(database, 'correctAnswers'));
+                if (snapshot.exists()) {
+                    const answersObj = snapshot.val();
+                    correctAnswers = Object.keys(answersObj)
+                        .sort((a, b) => parseInt(a) - parseInt(b))
+                        .map(key => answersObj[key]);
+                    console.log('✅ Loaded correct answers:', correctAnswers.length);
+                    return true;
+                } else {
+                    console.error('❌ No correct answers in database');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error loading answers:', error);
+                return false;
+            }
+        }
+
+        async function calculateScore(submissionKey, submission) {
+            if (!correctAnswers || correctAnswers.length === 0) {
+                const loaded = await loadCorrectAnswers();
+                if (!loaded) return false;
+            }
+
+            let correctCount = 0;
+            let totalMCQ = 0;
+
+            submission.answers.forEach((answer, index) => {
+                if (index < 18) {
+                    totalMCQ++;
+                    if (answer === correctAnswers[index]) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            const percentage = Math.round((correctCount / totalMCQ) * 100);
+            const passed = percentage >= 70;
+
+            try {
+                await update(ref(database, 'submissions/' + submissionKey), {
+                    correctCount: correctCount,
+                    totalMCQ: totalMCQ,
+                    percentage: percentage,
+                    passed: passed,
+                    scored: true,
+                    scoredAt: new Date().toISOString(),
+                    scoredBy: currentUser.email
+                });
+                console.log('✅ Scored:', percentage + '%');
+                return true;
+            } catch (error) {
+                console.error('Error updating score:', error);
+                return false;
+            }
+        }
+
+        window.scoreAllUnscored = async function() {
+            if (!currentUser) {
+                alert('Please login first');
+                return;
+            }
+
+            const scoreBtn = document.getElementById('scoreBtn');
+            scoreBtn.disabled = true;
+            scoreBtn.innerHTML = '<span>⏳</span><span>Scoring...</span>';
+
+            try {
+                const loaded = await loadCorrectAnswers();
+                if (!loaded) {
+                    alert('Error: Could not load correct answers');
+                    scoreBtn.disabled = false;
+                    scoreBtn.innerHTML = '<span>🎯</span><span>Calculate Scores</span>';
+                    return;
+                }
+
+                const snapshot = await get(ref(database, 'submissions'));
+                const promises = [];
+                let unscoredCount = 0;
+
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    if (!data.scored && !data.percentage) {
+                        promises.push(calculateScore(child.key, data));
+                        unscoredCount++;
+                    }
+                });
+
+                if (unscoredCount === 0) {
+                    alert('✅ All submissions already scored!');
+                } else {
+                    const results = await Promise.all(promises);
+                    const successCount = results.filter(r => r === true).length;
+                    alert('✅ Successfully scored ' + successCount + ' of ' + unscoredCount + ' submissions!');
+                }
+
+                loadData();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error scoring submissions: ' + error.message);
+            } finally {
+                scoreBtn.disabled = false;
+                scoreBtn.innerHTML = '<span>🎯</span><span>Calculate Scores</span>';
+            }
+        };
+
+        window.loadData = async function() {
+            if (!currentUser) {
+                alert('Please login first');
+                return;
+            }
+
+            console.log('🔄 Loading submissions...');
+            document.getElementById('tableContent').innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading submissions...</p></div>';
+
+            try {
+                await loadCorrectAnswers();
+                const snapshot = await get(ref(database, 'submissions'));
+                allSubs = [];
+                
+                if (!snapshot.exists()) {
+                    document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>No Submissions Yet</h3></div>';
+                    updateStats();
+                    return;
+                }
+
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    data._firebaseKey = child.key;
+                    allSubs.push(data);
+                });
+                
+                console.log('✅ Loaded', allSubs.length, 'submissions');
+                allSubs.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+                
+                updateStats();
+                renderTable();
+            } catch (err) {
+                console.error('❌ Error:', err);
+                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>Error Loading Data</h3><p>' + escapeHtml(err.message) + '</p></div>';
+            }
+        };
+
+        function updateStats() {
+            const total = allSubs.length;
+            const scored = allSubs.filter(s => s.scored || s.percentage !== undefined);
+            const passed = scored.filter(s => s.passed).length;
+            const avg = scored.length > 0 ? Math.round(scored.reduce((sum, s) => sum + safeNumber(s.percentage), 0) / scored.length) : 0;
+
+            document.getElementById('totalSubs').textContent = total;
+            document.getElementById('totalPassed').textContent = passed;
+            document.getElementById('totalFailed').textContent = scored.length - passed;
+            document.getElementById('avgScore').textContent = safeNumber(avg) + '%';
+        }
+
+        function renderTable() {
+            if (allSubs.length === 0) {
+                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>No Submissions</h3></div>';
+                return;
+            }
+
+            let html = '<table class="submissions-table"><thead><tr><th>Name</th><th>Email</th><th>Score</th><th>Status</th><th>Audio</th><th>Violations</th><th>Submitted</th><th>Action</th></tr></thead><tbody>';
+
+            allSubs.forEach((sub, idx) => {
+                const safeName = escapeHtml(sub.candidateData?.name || 'N/A');
+                const safeEmail = escapeHtml(sub.candidateData?.email || 'N/A');
+                const isScored = sub.scored || sub.percentage !== undefined;
+                const percentage = isScored ? safeNumber(sub.percentage) : '—';
+                const scoreDisplay = isScored ? percentage + '%' : '<span style="color:#ffc107;">⏳ Pending</span>';
+                const statusBadge = isScored ? 
+                    '<span class="badge ' + (sub.passed ? 'pass' : 'fail') + '">' + (sub.passed ? 'PASSED' : 'FAILED') + '</span>' :
+                    '<span class="badge unscored">UNSCORED</span>';
+                const hasAudio = sub.audioBase64 && sub.audioBase64.length > 100;
+                const violations = safeNumber(sub.securityViolationCount);
+                const violationColor = violations > 10 ? '#dc3545' : violations > 5 ? '#ffc107' : '#28a745';
+                const date = safeDate(sub.submittedAt);
+                
+                html += '<tr class="' + (!isScored ? 'unscored' : '') + '">';
+                html += '<td><strong>' + safeName + '</strong></td>';
+                html += '<td>' + safeEmail + '</td>';
+                html += '<td><strong style="font-size:16px;">' + scoreDisplay + '</strong></td>';
+                html += '<td>' + statusBadge + '</td>';
+                html += '<td><span class="badge ' + (hasAudio ? 'audio-yes' : 'audio-no') + '">' + (hasAudio ? '🎙️ YES' : '❌ NO') + '</span></td>';
+                html += '<td><strong style="color:' + violationColor + ';font-size:16px;">' + violations + '</strong></td>';
+                html += '<td>' + date + '</td>';
+                html += '<td><button class="btn-view" onclick="viewSub(' + idx + ')">👁️ View</button></td>';
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('tableContent').innerHTML = html;
+        }
+
+        window.viewSub = function(idx) {
+            currentSub = allSubs[idx];
+            
+            const safeName = escapeHtml(currentSub.candidateData?.name || 'N/A');
+            const safeEmail = escapeHtml(currentSub.candidateData?.email || 'N/A');
+            const safePhone = escapeHtml(currentSub.candidateData?.phone || 'N/A');
+            const safeSubmissionId = escapeHtml(currentSub.submissionId || 'N/A');
+            const isScored = currentSub.scored || currentSub.percentage !== undefined;
+
+            let html = '<div class="info-section"><h3>👤 Candidate Information</h3>';
+            html += '<p><strong>Name:</strong> ' + safeName + '</p>';
+            html += '<p><strong>Email:</strong> ' + safeEmail + '</p>';
+            html += '<p><strong>Phone:</strong> ' + safePhone + '</p>';
+            html += '<p><strong>Submission ID:</strong> <code>' + safeSubmissionId + '</code></p></div>';
+
+            if (currentSub.audioBase64 && currentSub.audioBase64.length > 100) {
+                html += '<div class="audio-section"><h3>🎤 Audio Introduction</h3>';
+                html += '<div class="audio-player"><audio id="modalAudio" controls><source src="' + currentSub.audioBase64 + '" type="audio/webm"><source src="' + currentSub.audioBase64 + '" type="audio/mp4"></audio>';
+                html += '<button class="btn btn-success" onclick="downloadAudio()">📥 Download Audio</button></div></div>';
+            } else {
+                html += '<div style="background:#fff3cd;padding:20px;border-radius:12px;margin:20px 0;"><strong>⚠️ No Audio Recording</strong></div>';
+            }
+
+            html += '<div class="info-section"><h3>📊 Test Results</h3>';
+            if (isScored) {
+                html += '<p><strong>Score:</strong> ' + safeNumber(currentSub.percentage) + '% (' + safeNumber(currentSub.correctCount) + '/' + safeNumber(currentSub.totalMCQ) + ' correct)</p>';
+                html += '<p><strong>Status:</strong> <span class="badge ' + (currentSub.passed ? 'pass' : 'fail') + '">' + (currentSub.passed ? 'PASSED ✓' : 'FAILED ✗') + '</span></p>';
+            } else {
+                html += '<p style="background:#fff3cd;padding:15px;border-radius:8px;"><strong>⏳ Unscored</strong><br>Click "Calculate Scores" button to score.</p>';
+            }
+            html += '<p><strong>Time Taken:</strong> ' + escapeHtml(currentSub.timeTaken || 'N/A') + '</p>';
+            html += '<p><strong>Submitted:</strong> ' + safeDate(currentSub.submittedAt) + '</p></div>';
+
+            // ANSWERS SECTION - INCLUDING WRITTEN ANSWERS
+            html += '<div class="answers-section"><h3>📝 All Answers</h3>';
+            
+            if (currentSub.answers && currentSub.answers.length > 0) {
+                currentSub.answers.forEach((answer, index) => {
+                    const questionText = questions[index] || 'Question ' + (index + 1);
+                    const isWritten = index >= 18; // Questions 18 and 19 are written
+                    
+                    html += '<div class="answer-item ' + (isWritten ? 'written' : '') + '">';
+                    html += '<div class="answer-question">Q' + (index + 1) + ': ' + escapeHtml(questionText) + '</div>';
+                    
+                    if (isWritten) {
+                        // WRITTEN ANSWER
+                        if (answer && typeof answer === 'string' && answer.trim().length > 0) {
+                            const words = answer.trim().split(/\s+/).length;
+                            html += '<div class="answer-response"><strong>Response (' + words + ' words):</strong></div>';
+                            html += '<div class="answer-response written-text">' + escapeHtml(answer) + '</div>';
+                        } else {
+                            html += '<div class="answer-response" style="color:#999;"><em>No answer provided</em></div>';
+                        }
+                    } else {
+                        // MULTIPLE CHOICE ANSWER
+                        const options = questionOptions[index];
+                        if (options && answer !== null && answer !== undefined) {
+                            const answerText = options[answer] || 'Invalid answer';
+                            html += '<div class="answer-response"><strong>Answer:</strong> ' + escapeHtml(answerText) + '</div>';
+                            
+                            if (isScored && correctAnswers[index] !== undefined) {
+                                const isCorrect = answer === correctAnswers[index];
+                                if (isCorrect) {
+                                    html += '<div style="color:#28a745;font-weight:600;margin-top:8px;">✓ Correct</div>';
+                                } else {
+                                    const correctText = options[correctAnswers[index]];
+                                    html += '<div style="color:#dc3545;font-weight:600;margin-top:8px;">✗ Incorrect (Correct: ' + escapeHtml(correctText) + ')</div>';
+                                }
+                            }
+                        } else {
+                            html += '<div class="answer-response" style="color:#999;"><em>No answer provided</em></div>';
+                        }
+                    }
+                    
+                    html += '</div>';
+                });
+            } else {
+                html += '<p>No answers found.</p>';
+            }
+            
+            html += '</div>';
+
+            // SECURITY SECTION
+            html += '<div class="info-section"><h3>🔒 Security Report</h3>';
+            html += '<p><strong>Total Violations:</strong> ' + safeNumber(currentSub.securityViolationCount) + '</p>';
+            html += '<p><strong>Tab Switches:</strong> ' + safeNumber(currentSub.tabSwitchCount) + '</p>';
+            if (currentSub.securityBreakdown) {
+                const sb = currentSub.securityBreakdown;
+                if (sb.pasteAttempts) html += '<p><strong>Paste Attempts:</strong> ' + safeNumber(sb.pasteAttempts) + '</p>';
+                if (sb.devToolsAttempts) html += '<p><strong>DevTools Attempts:</strong> ' + safeNumber(sb.devToolsAttempts) + '</p>';
+            }
+            html += '</div>';
+
+            html += '<div style="text-align:center;margin-top:30px;"><button class="btn btn-success" onclick="downloadReport()">📥 Download Full Report</button></div>';
+
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('detailModal').classList.add('show');
+
+            setTimeout(() => {
+                const audio = document.getElementById('modalAudio');
+                if (audio) audio.load();
+            }, 100);
+        };
+
+        window.closeModal = function() {
+            const audio = document.getElementById('modalAudio');
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            document.getElementById('detailModal').classList.remove('show');
+        };
+
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        window.downloadAudio = function() {
+            if (!currentSub || !currentSub.audioBase64) {
+                alert('No audio available');
+                return;
+            }
+            const safeName = (currentSub.candidateData?.name || 'candidate').replace(/[^a-z0-9]/gi, '_');
+            const link = document.createElement('a');
+            link.href = currentSub.audioBase64;
+            link.download = safeName + '_Audio.webm';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        window.downloadReport = function() {
+            if (!currentSub) return;
+            
+            let report = '═══════════════════════════════════════\n';
+            report += '   ASSESSMENT REPORT\n';
+            report += '═══════════════════════════════════════\n\n';
+            report += 'Candidate: ' + (currentSub.candidateData?.name || 'N/A') + '\n';
+            report += 'Email: ' + (currentSub.candidateData?.email || 'N/A') + '\n';
+            report += 'Phone: ' + (currentSub.candidateData?.phone || 'N/A') + '\n';
+            report += 'Submission ID: ' + (currentSub.submissionId || 'N/A') + '\n\n';
+            
+            if (currentSub.scored || currentSub.percentage) {
+                report += 'Score: ' + safeNumber(currentSub.percentage) + '%\n';
+                report += 'Status: ' + (currentSub.passed ? 'PASSED' : 'FAILED') + '\n';
+            }
+            
+            report += '\n═══════════════════════════════════════\n';
+            report += 'ANSWERS\n';
+            report += '═══════════════════════════════════════\n\n';
+            
+            if (currentSub.answers) {
+                currentSub.answers.forEach((answer, index) => {
+                    report += 'Q' + (index + 1) + ': ' + (questions[index] || 'Question ' + (index + 1)) + '\n';
+                    if (index >= 18) {
+                        report += 'Answer: ' + (answer || 'No answer') + '\n\n';
+                    } else {
+                        const opts = questionOptions[index];
+                        report += 'Answer: ' + (opts && opts[answer] ? opts[answer] : 'No answer') + '\n\n';
+                    }
+                });
+            }
+            
+            report += '═══════════════════════════════════════\n';
+            
+            const blob = new Blob([report], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (currentSub.candidateData?.name || 'report').replace(/[^a-z0-9]/gi, '_') + '_Report.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
+
+        window.downloadAll = function() {
+            if (allSubs.length === 0) {
+                alert('No submissions to download');
+                return;
+            }
+
+            let report = '═══════════════════════════════════════\n';
+            report += '   ALL SUBMISSIONS SUMMARY\n';
+            report += '═══════════════════════════════════════\n\n';
+            report += 'Generated: ' + new Date().toLocaleString() + '\n';
+            report += 'Total: ' + allSubs.length + '\n\n';
+
+            allSubs.forEach((sub, idx) => {
+                report += '─────────────────────────────────────\n';
+                report += (idx + 1) + '. ' + (sub.candidateData?.name || 'N/A') + '\n';
+                report += '   Email: ' + (sub.candidateData?.email || 'N/A') + '\n';
+                if (sub.scored || sub.percentage) {
+                    report += '   Score: ' + safeNumber(sub.percentage) + '%\n';
+                    report += '   Status: ' + (sub.passed ? 'PASSED' : 'FAILED') + '\n';
+                }
+                report += '\n';
+            });
+
+            report += '═══════════════════════════════════════\n';
+
+            const blob = new Blob([report], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'All_Submissions_' + Date.now() + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
+
+        console.log('✅ Admin panel initialized');
+    </script>
+</body>
+</html>
