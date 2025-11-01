@@ -13,17 +13,33 @@
             --success: #28a745;
             --danger: #dc3545;
             --warning: #ffc107;
+            --info: #17a2b8;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --bg-light: #f9fafb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #f5f7fa;
             min-height: 100vh;
+            line-height: 1.6;
         }
 
         .page { display: none; }
-        .page.active { display: block; }
+        .page.active { display: block; animation: fadeIn 0.5s; }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LOGIN PAGE */
         .login-container {
             display: flex;
             align-items: center;
@@ -35,71 +51,92 @@
 
         .login-box {
             background: white;
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px 50px;
+            border-radius: 32px;
+            box-shadow: var(--shadow-xl);
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298, #28a745);
         }
 
         .login-box h1 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 32px;
-            font-weight: 700;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            font-size: 36px;
+            font-weight: 800;
         }
 
         .login-box p {
-            color: #666;
-            margin-bottom: 35px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
             font-size: 16px;
         }
 
         .security-badge {
-            background: var(--danger);
+            background: linear-gradient(135deg, #dc3545, #c82333);
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 12px 24px;
+            border-radius: 50px;
             font-size: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 600;
+            gap: 10px;
+            font-weight: 700;
+            box-shadow: 0 10px 15px -3px rgba(220, 53, 69, 0.4);
         }
 
         .login-box input {
             width: 100%;
-            padding: 16px 20px;
+            padding: 18px 24px;
             margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
             font-size: 16px;
             font-family: inherit;
+            background: var(--bg-light);
+            transition: all 0.3s;
         }
 
         .login-box input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: #1e3c72;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.1);
+            transform: translateY(-2px);
         }
 
         .login-box button {
             width: 100%;
-            padding: 16px;
+            padding: 18px 32px;
             background: var(--primary-gradient);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .login-box button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(30, 60, 114, 0.5);
         }
 
         .login-box button:disabled {
@@ -109,138 +146,195 @@
 
         .error-message {
             color: var(--danger);
-            margin-top: 15px;
+            margin-top: 20px;
             display: none;
-            font-weight: 500;
-            background: #fff5f5;
-            padding: 12px;
-            border-radius: 8px;
+            font-weight: 600;
+            background: #fef2f2;
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid var(--danger);
         }
 
         .error-message.show { display: block; }
 
+        /* DASHBOARD */
         .dashboard-header {
             background: var(--primary-gradient);
             color: white;
-            padding: 30px 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 40px 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .dashboard-header h1 {
-            font-size: 32px;
-            margin-bottom: 5px;
-            font-weight: 700;
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 800;
         }
 
         .dashboard-header p {
-            opacity: 0.9;
-            font-size: 14px;
+            opacity: 0.95;
+            font-size: 15px;
+        }
+
+        .user-email {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-left: 12px;
+            font-weight: 600;
         }
 
         .header-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 16px;
+            margin-top: 25px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-primary {
             background: white;
             color: var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
         .btn-warning {
             background: var(--warning);
             color: #856404;
+            box-shadow: 0 4px 6px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 193, 7, 0.4);
         }
 
         .btn-success {
             background: var(--success);
             color: white;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.4);
         }
 
         .btn-danger {
             background: var(--danger);
             color: white;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.4);
         }
 
         .dashboard-content {
             max-width: 1600px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 50px 30px;
         }
 
+        /* STATS CARDS */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         .stat-card {
             background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 5px solid var(--primary);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            border-left: 6px solid var(--primary);
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.05), transparent);
+            border-radius: 0 0 0 100%;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
 
         .stat-card h3 {
-            color: #6c757d;
-            font-size: 14px;
+            color: var(--text-secondary);
+            font-size: 13px;
             text-transform: uppercase;
-            margin-bottom: 12px;
-            font-weight: 600;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .stat-card .stat-value {
             color: var(--primary);
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1;
         }
 
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* TABLE */
         .table-container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
             overflow: hidden;
         }
 
         .table-header {
-            padding: 25px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border-bottom: 3px solid var(--border-color);
         }
 
         .table-header h2 {
-            color: var(--primary);
-            font-size: 24px;
-            font-weight: 700;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 28px;
+            font-weight: 800;
         }
 
         .submissions-table {
@@ -249,96 +343,108 @@
         }
 
         .submissions-table thead {
-            background: var(--primary);
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
         }
 
         .submissions-table th {
-            padding: 18px 20px;
+            padding: 20px;
             text-align: left;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .submissions-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 22px 20px;
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .submissions-table tbody tr {
+            transition: all 0.3s;
         }
 
         .submissions-table tbody tr:hover {
-            background: #f8f9ff;
+            background: linear-gradient(135deg, #f0f4ff, #e3ebff);
+            transform: scale(1.01);
         }
 
         .submissions-table tbody tr.unscored {
-            background: #fffbf0;
+            background: linear-gradient(135deg, #fffbf0, #fff8e1);
         }
 
         .badge {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 11px;
+            font-weight: 700;
             display: inline-block;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .badge.pass {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
         }
 
         .badge.fail {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
             color: #721c24;
         }
 
         .badge.unscored {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
             color: #856404;
         }
 
         .badge.audio-yes {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
         }
 
         .badge.audio-no {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
             color: #721c24;
         }
 
         .btn-view {
-            background: var(--primary);
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s;
         }
 
         .btn-view:hover {
-            background: #1a3461;
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(30, 60, 114, 0.3);
         }
 
-        .modal {
+        /* MODAL */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 99999;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            animation: fadeIn 0.3s;
             overflow-y: auto;
             padding: 40px 20px;
         }
 
-        .modal.show {
+        .modal-overlay.show {
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -346,150 +452,305 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 1100px;
+            border-radius: 32px;
+            max-width: 1200px;
             width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             margin: auto;
-            max-height: 90vh;
-            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 35px 45px;
+            border-radius: 32px 32px 0 0;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #f0f0f0;
             align-items: center;
         }
 
         .modal-header h2 {
-            color: var(--primary);
             font-size: 28px;
+            font-weight: 800;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-weight: 300;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 45px;
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .info-card h3 {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
 
-        .close-modal {
-            background: var(--danger);
+        .info-card p {
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+            padding: 35px;
+            border-radius: 24px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 25px -5px rgba(30, 60, 114, 0.4);
+        }
+
+        .score-card .score-value {
+            font-size: 72px;
+            font-weight: 800;
+            margin: 15px 0;
+            line-height: 1;
+        }
+
+        .score-card .score-label {
+            font-size: 16px;
+            opacity: 0.9;
             font-weight: 600;
         }
 
-        .info-section {
-            background: #f8f9fa;
-            padding: 25px;
+        .section-title {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 40px 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e5e7eb;
+        }
+
+        .audio-section {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--success);
+        }
+
+        .audio-section audio {
+            width: 100%;
+            margin-top: 15px;
             border-radius: 12px;
-            margin: 20px 0;
-            border-left: 4px solid var(--primary);
-        }
-
-        .info-section h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .info-section p {
-            margin: 10px 0;
-            color: #333;
-            font-size: 15px;
-        }
-
-        .answers-section {
-            background: #f8f9ff;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .answers-section h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 20px;
-            font-weight: 600;
         }
 
         .answer-item {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .answer-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .answer-item.correct {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .answer-item.incorrect {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
+        }
+
+        .question-label {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .answer-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .answer-status.correct {
+            background: var(--success);
+            color: white;
+        }
+
+        .answer-status.incorrect {
+            background: var(--danger);
+            color: white;
+        }
+
+        .question-text {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .answer-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
             border-left: 4px solid var(--primary);
         }
 
-        .answer-item.written {
-            border-left-color: #17a2b8;
-            background: #e8f7fa;
+        .answer-item.correct .answer-text {
+            border-left-color: var(--success);
         }
 
-        .answer-question {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 15px;
+        .answer-item.incorrect .answer-text {
+            border-left-color: var(--danger);
         }
 
-        .answer-response {
-            color: #555;
-            margin: 8px 0;
-            padding-left: 15px;
+        .written-answer-box {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid var(--info);
             font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .answer-response.written-text {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            line-height: 1.7;
+            color: var(--text-primary);
             white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
-        .audio-section {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            padding: 30px;
-            border-radius: 12px;
-            margin: 30px 0;
-        }
-
-        .audio-section h3 {
-            color: #0d47a1;
-            margin-bottom: 20px;
-            font-size: 20px;
+        .word-count {
+            color: var(--text-secondary);
+            font-size: 12px;
             font-weight: 600;
+            margin-top: 10px;
+            text-align: right;
         }
 
-        .audio-player {
+        .security-section {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 5px solid var(--danger);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .security-item {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
+            text-align: center;
         }
 
-        .audio-player audio {
-            width: 100%;
-            margin-bottom: 15px;
+        .security-item .count {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--danger);
+            margin-bottom: 8px;
+        }
+
+        .security-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .device-info {
+            background: linear-gradient(135deg, #f0f4ff, #e3ebff);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .device-info p {
+            margin: 8px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .device-info strong {
+            color: var(--text-primary);
         }
 
         .loading {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
 
         @keyframes spin {
@@ -499,50 +760,73 @@
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
+            padding: 80px 20px;
+            color: var(--text-secondary);
         }
 
-        .user-email {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 13px;
-            margin-left: 10px;
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            background: var(--info);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(23, 162, 184, 0.3);
         }
 
         @media (max-width: 768px) {
-            .dashboard-header { padding: 20px; }
+            .dashboard-header { padding: 30px 25px; }
+            .dashboard-header h1 { font-size: 28px; }
             .stats-grid { grid-template-columns: 1fr; }
-            .modal-content { padding: 25px 20px; }
+            .login-box { padding: 40px 30px; }
+            .table-container { overflow-x: auto; }
+            .header-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .modal-body { padding: 25px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .security-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <!-- LOGIN PAGE -->
     <div id="loginPage" class="page active">
         <div class="login-container">
             <div class="login-box">
                 <div class="security-badge">
                     <span>🔐</span>
-                    <span>SECURED ADMIN ACCESS</span>
+                    <span>ADMIN ACCESS ONLY</span>
                 </div>
                 <h1>HR Admin Panel</h1>
                 <p>Firebase Authentication Required</p>
                 <form id="loginForm">
-                    <input type="email" id="adminEmail" placeholder="Admin Email" required autocomplete="username">
+                    <input type="email" id="adminEmail" placeholder="Admin Email Address" required autocomplete="username">
                     <input type="password" id="adminPassword" placeholder="Password" required autocomplete="current-password">
-                    <button type="submit" id="loginBtn">Access Dashboard</button>
+                    <button type="submit" id="loginBtn">🔓 Access Dashboard</button>
                 </form>
-                <div class="error-message" id="loginError">❌ Authentication failed.</div>
+                <div class="error-message" id="loginError">❌ Authentication failed</div>
             </div>
         </div>
     </div>
 
+    <!-- DASHBOARD PAGE -->
     <div id="dashboardPage" class="page">
         <div class="dashboard-header">
             <h1>📊 HR Assessment Dashboard</h1>
-            <p>Secured with Firebase Auth <span class="user-email" id="userEmail"></span></p>
+            <p>Secured with Firebase Authentication <span class="user-email" id="userEmail"></span></p>
             <div class="header-actions">
                 <button class="btn btn-primary" onclick="loadData()">
                     <span>🔄</span>
@@ -554,7 +838,7 @@
                 </button>
                 <button class="btn btn-success" onclick="downloadAll()">
                     <span>📥</span>
-                    <span>Download All</span>
+                    <span>Download All Reports</span>
                 </button>
                 <button class="btn btn-danger" onclick="logout()">
                     <span>🚪</span>
@@ -564,50 +848,55 @@
         </div>
 
         <div class="dashboard-content">
+            <!-- STATS CARDS -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Submissions</h3>
                     <div class="stat-value" id="totalSubs">0</div>
-                    <div style="font-size: 13px; color: #6c757d;">All time</div>
+                    <div class="stat-label">All time candidates</div>
                 </div>
                 <div class="stat-card" style="border-left-color: var(--success);">
-                    <h3>Passed</h3>
+                    <h3>Passed (70%+)</h3>
                     <div class="stat-value" id="totalPassed" style="color: var(--success);">0</div>
-                    <div style="font-size: 13px; color: #6c757d;">70% or higher</div>
+                    <div class="stat-label">Qualified candidates</div>
                 </div>
                 <div class="stat-card" style="border-left-color: var(--danger);">
-                    <h3>Failed</h3>
+                    <h3>Failed (&lt;70%)</h3>
                     <div class="stat-value" id="totalFailed" style="color: var(--danger);">0</div>
-                    <div style="font-size: 13px; color: #6c757d;">Below 70%</div>
+                    <div class="stat-label">Below passing grade</div>
                 </div>
                 <div class="stat-card" style="border-left-color: var(--warning);">
                     <h3>Average Score</h3>
                     <div class="stat-value" id="avgScore" style="color: var(--warning);">0%</div>
-                    <div style="font-size: 13px; color: #6c757d;">Mean percentage</div>
+                    <div class="stat-label">Mean percentage</div>
                 </div>
             </div>
 
+            <!-- SUBMISSIONS TABLE -->
             <div class="table-container">
                 <div class="table-header">
-                    <h2>All Submissions</h2>
+                    <h2>📋 All Candidate Submissions</h2>
                 </div>
                 <div id="tableContent">
                     <div class="loading">
                         <div class="spinner"></div>
-                        <p>Loading submissions...</p>
+                        <p style="font-size: 16px; color: var(--text-secondary); font-weight: 600;">Loading submissions from Firebase...</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="detailModal" class="modal">
+    <!-- DETAILED VIEW MODAL -->
+    <div id="detailModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>📋 Submission Details</h2>
-                <button class="close-modal" onclick="closeModal()">✕ Close</button>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div id="modalBody"></div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
         </div>
     </div>
 
@@ -629,6 +918,30 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const auth = getAuth(app);
+
+        // QUESTIONS DATABASE (same as candidate portal)
+        const questions = [
+            { type: "multiple-choice", question: "What is the most important skill in customer service?", options: ["Speed of response", "Active listening and empathy", "Technical knowledge only", "Following scripts exactly"] },
+            { type: "multiple-choice", question: "A customer is angry about a delayed delivery. What should you do FIRST?", options: ["Explain company policies", "Acknowledge their frustration and apologize", "Transfer them to a manager", "Offer a discount immediately"] },
+            { type: "multiple-choice", question: "What does 'active listening' mean in customer service?", options: ["Listening while doing other tasks", "Fully concentrating, understanding, and responding appropriately", "Waiting for your turn to speak", "Taking notes only"] },
+            { type: "multiple-choice", question: "How should you handle a customer request you cannot immediately fulfill?", options: ["Say 'I don't know' and end the call", "Set clear expectations and follow up", "Make promises you might not keep", "Ignore the request"] },
+            { type: "multiple-choice", question: "What is the best way to end a customer service interaction?", options: ["Hang up quickly", "Ask if there's anything else you can help with and thank them", "Just say goodbye", "Transfer to another department"] },
+            { type: "multiple-choice", question: "A customer is using inappropriate language. What should you do?", options: ["Use inappropriate language back", "Remain professional and politely request respectful communication", "Hang up immediately", "Laugh it off"] },
+            { type: "multiple-choice", question: "What is the purpose of asking clarifying questions?", options: ["To confuse the customer", "To fully understand the customer's issue and provide accurate solutions", "To extend call time", "To show off knowledge"] },
+            { type: "multiple-choice", question: "How should you prioritize multiple customer requests?", options: ["Random order", "By urgency and impact", "Ignore less important ones", "Only help familiar customers"] },
+            { type: "multiple-choice", question: "What should you do if you don't know the answer to a customer's question?", options: ["Make up an answer", "Admit you don't know and find someone who does or research it", "Change the subject", "Blame the customer"] },
+            { type: "multiple-choice", question: "What is the key to building customer loyalty?", options: ["Low prices only", "Consistent, reliable, and personalized service", "Fancy marketing", "Long phone calls"] },
+            { type: "multiple-choice", question: "When should you escalate a customer issue to a supervisor?", options: ["For every single request", "When you've exhausted your authority and resources", "Never escalate", "Only on Fridays"] },
+            { type: "multiple-choice", question: "What is the best approach to handling customer complaints?", options: ["Defend the company immediately", "Listen, empathize, apologize, and offer solutions", "Blame other departments", "Minimize the issue"] },
+            { type: "multiple-choice", question: "How should you communicate with a customer who is hard to understand?", options: ["Pretend you understand", "Ask politely for clarification and confirm understanding", "Get frustrated and transfer", "Speak louder"] },
+            { type: "multiple-choice", question: "What does 'going the extra mile' mean in customer service?", options: ["Working overtime", "Exceeding expectations and providing exceptional service", "Doing the bare minimum", "Selling more products"] },
+            { type: "multiple-choice", question: "How should you handle multiple tasks while assisting a customer?", options: ["Multitask constantly", "Focus fully on the customer, then handle other tasks", "Ask the customer to wait indefinitely", "Rush through everything"] },
+            { type: "multiple-choice", question: "What is the importance of product knowledge in customer service?", options: ["Not important at all", "Helps provide accurate information and build trust", "Only for sales people", "Can be ignored"] },
+            { type: "multiple-choice", question: "How should you respond to positive customer feedback?", options: ["Ignore it", "Thank them and share it with your team", "Ask for money", "Take all credit yourself"] },
+            { type: "multiple-choice", question: "What is the best way to handle an upset customer who wants a refund outside of policy?", options: ["Immediately say no", "Explain the policy empathetically and explore alternative solutions", "Give refund without checking", "Argue about the policy"] },
+            { type: "written", question: "Describe a time when you successfully handled a difficult customer situation. What was the problem, what actions did you take, and what was the outcome? (Minimum 100 words)", minWords: 100 },
+            { type: "written", question: "Imagine a customer contacts you saying they received the wrong product and they're very upset because it was meant as a gift. Walk us through exactly how you would handle this situation from start to finish. (Minimum 100 words)", minWords: 100 }
+        ];
 
         function escapeHtml(unsafe) {
             if (typeof unsafe !== 'string') return unsafe;
@@ -654,56 +967,25 @@
             }
         }
 
+        function normalizeAnswers(answers) {
+            if (!answers) return [];
+            if (Array.isArray(answers)) return answers;
+            
+            const arr = [];
+            Object.keys(answers).sort((a, b) => parseInt(a) - parseInt(b)).forEach(key => {
+                arr[parseInt(key)] = answers[key];
+            });
+            return arr;
+        }
+
+        function countWords(text) {
+            if (!text || typeof text !== 'string') return 0;
+            return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        }
+
         let allSubs = [];
-        let currentSub = null;
         let currentUser = null;
         let correctAnswers = [];
-
-        const questions = [
-            "What is the most important skill in customer service?",
-            "A customer is angry about a delayed delivery. What should you do FIRST?",
-            "What does 'active listening' mean in customer service?",
-            "How should you handle a customer request you cannot immediately fulfill?",
-            "What is the best way to end a customer service interaction?",
-            "A customer is using inappropriate language. What should you do?",
-            "What is the purpose of asking clarifying questions?",
-            "How should you prioritize multiple customer requests?",
-            "What should you do if you don't know the answer to a customer's question?",
-            "What is the key to building customer loyalty?",
-            "When should you escalate a customer issue to a supervisor?",
-            "What is the best approach to handling customer complaints?",
-            "How should you communicate with a customer who is hard to understand?",
-            "What does 'going the extra mile' mean in customer service?",
-            "How should you handle multiple tasks while assisting a customer?",
-            "What is the importance of product knowledge in customer service?",
-            "How should you respond to positive customer feedback?",
-            "What is the best way to handle an upset customer who wants a refund outside of policy?",
-            "Describe a time when you successfully handled a difficult customer situation. What was the problem, what actions did you take, and what was the outcome? (Minimum 100 words)",
-            "Imagine a customer contacts you saying they received the wrong product and they're very upset because it was meant as a gift. Walk us through exactly how you would handle this situation from start to finish. (Minimum 100 words)"
-        ];
-
-        const questionOptions = [
-            ["Speed of response", "Active listening and empathy", "Technical knowledge only", "Following scripts exactly"],
-            ["Explain company policies", "Acknowledge their frustration and apologize", "Transfer them to a manager", "Offer a discount immediately"],
-            ["Listening while doing other tasks", "Fully concentrating, understanding, and responding appropriately", "Waiting for your turn to speak", "Taking notes only"],
-            ["Say 'I don't know' and end the call", "Set clear expectations and follow up", "Make promises you might not keep", "Ignore the request"],
-            ["Hang up quickly", "Ask if there's anything else you can help with and thank them", "Just say goodbye", "Transfer to another department"],
-            ["Use inappropriate language back", "Remain professional and politely request respectful communication", "Hang up immediately", "Laugh it off"],
-            ["To confuse the customer", "To fully understand the customer's issue and provide accurate solutions", "To extend call time", "To show off knowledge"],
-            ["Random order", "By urgency and impact", "Ignore less important ones", "Only help familiar customers"],
-            ["Make up an answer", "Admit you don't know and find someone who does or research it", "Change the subject", "Blame the customer"],
-            ["Low prices only", "Consistent, reliable, and personalized service", "Fancy marketing", "Long phone calls"],
-            ["For every single request", "When you've exhausted your authority and resources", "Never escalate", "Only on Fridays"],
-            ["Defend the company immediately", "Listen, empathize, apologize, and offer solutions", "Blame other departments", "Minimize the issue"],
-            ["Pretend you understand", "Ask politely for clarification and confirm understanding", "Get frustrated and transfer", "Speak louder"],
-            ["Working overtime", "Exceeding expectations and providing exceptional service", "Doing the bare minimum", "Selling more products"],
-            ["Multitask constantly", "Focus fully on the customer, then handle other tasks", "Ask the customer to wait indefinitely", "Rush through everything"],
-            ["Not important at all", "Helps provide accurate information and build trust", "Only for sales people", "Can be ignored"],
-            ["Ignore it", "Thank them and share it with your team", "Ask for money", "Take all credit yourself"],
-            ["Immediately say no", "Explain the policy empathetically and explore alternative solutions", "Give refund without checking", "Argue about the policy"],
-            null,
-            null
-        ];
 
         onAuthStateChanged(auth, user => {
             if (user) {
@@ -727,17 +1009,18 @@
             const errorMsg = document.getElementById('loginError');
             
             loginBtn.disabled = true;
-            loginBtn.textContent = 'Authenticating...';
+            loginBtn.textContent = '⏳ Authenticating...';
             errorMsg.classList.remove('show');
             
             try {
                 await signInWithEmailAndPassword(auth, email, password);
+                console.log('✅ Login successful');
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('❌ Login error:', error);
                 errorMsg.textContent = '❌ ' + escapeHtml(error.message);
                 errorMsg.classList.add('show');
                 loginBtn.disabled = false;
-                loginBtn.textContent = 'Access Dashboard';
+                loginBtn.innerHTML = '🔓 Access Dashboard';
             }
         });
 
@@ -746,52 +1029,83 @@
                 signOut(auth).then(() => {
                     document.getElementById('adminEmail').value = '';
                     document.getElementById('adminPassword').value = '';
+                    console.log('✅ Logged out');
                 });
             }
         };
 
         async function loadCorrectAnswers() {
             try {
+                console.log('📥 Loading correct answers from Firebase...');
                 const snapshot = await get(ref(database, 'correctAnswers'));
+                
                 if (snapshot.exists()) {
-                    const answersObj = snapshot.val();
-                    correctAnswers = Object.keys(answersObj)
-                        .sort((a, b) => parseInt(a) - parseInt(b))
-                        .map(key => answersObj[key]);
-                    console.log('✅ Loaded correct answers:', correctAnswers.length);
+                    const answersData = snapshot.val();
+                    correctAnswers = normalizeAnswers(answersData);
+                    console.log('✅ Loaded correct answers:', correctAnswers);
                     return true;
                 } else {
-                    console.error('❌ No correct answers in database');
+                    console.error('❌ No correct answers found in database');
+                    
+                    if (confirm('Correct answers not found!\n\nWould you like to auto-create them now?\n(All MCQs will have answer index 1)')) {
+                        await createCorrectAnswers();
+                        return await loadCorrectAnswers();
+                    }
                     return false;
                 }
             } catch (error) {
-                console.error('Error loading answers:', error);
+                console.error('❌ Error loading correct answers:', error);
+                alert('Error loading correct answers: ' + error.message);
+                return false;
+            }
+        }
+
+        async function createCorrectAnswers() {
+            try {
+                const answers = {
+                    "0": 1, "1": 1, "2": 1, "3": 1, "4": 1, "5": 1,
+                    "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1,
+                    "12": 1, "13": 1, "14": 1, "15": 1, "16": 1, "17": 1,
+                    "18": null, "19": null
+                };
+                
+                await set(ref(database, 'correctAnswers'), answers);
+                console.log('✅ Created correct answers in Firebase');
+                alert('✅ Correct answers created successfully!');
+                return true;
+            } catch (error) {
+                console.error('❌ Error creating correct answers:', error);
+                alert('Error creating correct answers: ' + error.message);
                 return false;
             }
         }
 
         async function calculateScore(submissionKey, submission) {
-            if (!correctAnswers || correctAnswers.length === 0) {
-                const loaded = await loadCorrectAnswers();
-                if (!loaded) return false;
-            }
+            try {
+                if (!correctAnswers || correctAnswers.length === 0) {
+                    const loaded = await loadCorrectAnswers();
+                    if (!loaded) return false;
+                }
 
-            let correctCount = 0;
-            let totalMCQ = 0;
+                const answers = normalizeAnswers(submission.answers);
+                
+                if (!answers || answers.length === 0) {
+                    console.error('No answers found for submission:', submissionKey);
+                    return false;
+                }
 
-            submission.answers.forEach((answer, index) => {
-                if (index < 18) {
-                    totalMCQ++;
-                    if (answer === correctAnswers[index]) {
+                let correctCount = 0;
+                let totalMCQ = 18;
+
+                for (let i = 0; i < Math.min(18, answers.length); i++) {
+                    if (answers[i] === correctAnswers[i]) {
                         correctCount++;
                     }
                 }
-            });
 
-            const percentage = Math.round((correctCount / totalMCQ) * 100);
-            const passed = percentage >= 70;
+                const percentage = Math.round((correctCount / totalMCQ) * 100);
+                const passed = percentage >= 70;
 
-            try {
                 await update(ref(database, 'submissions/' + submissionKey), {
                     correctCount: correctCount,
                     totalMCQ: totalMCQ,
@@ -801,10 +1115,11 @@
                     scoredAt: new Date().toISOString(),
                     scoredBy: currentUser.email
                 });
-                console.log('✅ Scored:', percentage + '%');
+                
+                console.log('✅ Scored:', submissionKey, '→', percentage + '%');
                 return true;
             } catch (error) {
-                console.error('Error updating score:', error);
+                console.error('❌ Error scoring submission:', submissionKey, error);
                 return false;
             }
         }
@@ -817,40 +1132,48 @@
 
             const scoreBtn = document.getElementById('scoreBtn');
             scoreBtn.disabled = true;
-            scoreBtn.innerHTML = '<span>⏳</span><span>Scoring...</span>';
+            scoreBtn.innerHTML = '<span>⏳</span><span>Calculating...</span>';
 
             try {
                 const loaded = await loadCorrectAnswers();
                 if (!loaded) {
-                    alert('Error: Could not load correct answers');
                     scoreBtn.disabled = false;
                     scoreBtn.innerHTML = '<span>🎯</span><span>Calculate Scores</span>';
                     return;
                 }
 
                 const snapshot = await get(ref(database, 'submissions'));
+                
+                if (!snapshot.exists()) {
+                    alert('No submissions found');
+                    scoreBtn.disabled = false;
+                    scoreBtn.innerHTML = '<span>🎯</span><span>Calculate Scores</span>';
+                    return;
+                }
+
                 const promises = [];
                 let unscoredCount = 0;
 
                 snapshot.forEach(child => {
                     const data = child.val();
-                    if (!data.scored && !data.percentage) {
+                    if (!data.scored && data.percentage === undefined) {
                         promises.push(calculateScore(child.key, data));
                         unscoredCount++;
                     }
                 });
 
                 if (unscoredCount === 0) {
-                    alert('✅ All submissions already scored!');
+                    alert('✅ All submissions are already scored!');
                 } else {
+                    console.log('📊 Scoring', unscoredCount, 'submissions...');
                     const results = await Promise.all(promises);
                     const successCount = results.filter(r => r === true).length;
-                    alert('✅ Successfully scored ' + successCount + ' of ' + unscoredCount + ' submissions!');
+                    alert('✅ Successfully scored ' + successCount + ' out of ' + unscoredCount + ' submissions!');
                 }
 
                 loadData();
             } catch (error) {
-                console.error('Error:', error);
+                console.error('❌ Error:', error);
                 alert('Error scoring submissions: ' + error.message);
             } finally {
                 scoreBtn.disabled = false;
@@ -864,16 +1187,17 @@
                 return;
             }
 
-            console.log('🔄 Loading submissions...');
-            document.getElementById('tableContent').innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading submissions...</p></div>';
+            console.log('🔄 Loading all submissions...');
+            document.getElementById('tableContent').innerHTML = '<div class="loading"><div class="spinner"></div><p style="font-size: 16px; color: var(--text-secondary); font-weight: 600;">Loading submissions...</p></div>';
 
             try {
                 await loadCorrectAnswers();
+                
                 const snapshot = await get(ref(database, 'submissions'));
                 allSubs = [];
                 
                 if (!snapshot.exists()) {
-                    document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>No Submissions Yet</h3></div>';
+                    document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>📭 No Submissions Yet</h3><p>Waiting for candidates...</p></div>';
                     updateStats();
                     return;
                 }
@@ -891,7 +1215,7 @@
                 renderTable();
             } catch (err) {
                 console.error('❌ Error:', err);
-                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>Error Loading Data</h3><p>' + escapeHtml(err.message) + '</p></div>';
+                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>❌ Error Loading Data</h3><p>' + escapeHtml(err.message) + '</p></div>';
             }
         };
 
@@ -909,33 +1233,39 @@
 
         function renderTable() {
             if (allSubs.length === 0) {
-                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>No Submissions</h3></div>';
+                document.getElementById('tableContent').innerHTML = '<div class="empty-state"><h3>📭 No Submissions</h3></div>';
                 return;
             }
 
-            let html = '<table class="submissions-table"><thead><tr><th>Name</th><th>Email</th><th>Score</th><th>Status</th><th>Audio</th><th>Violations</th><th>Submitted</th><th>Action</th></tr></thead><tbody>';
+            let html = '<table class="submissions-table"><thead><tr>';
+            html += '<th>Candidate</th><th>Email</th><th>Score</th><th>Status</th><th>Audio</th><th>Violations</th><th>Submitted</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
 
             allSubs.forEach((sub, idx) => {
                 const safeName = escapeHtml(sub.candidateData?.name || 'N/A');
                 const safeEmail = escapeHtml(sub.candidateData?.email || 'N/A');
                 const isScored = sub.scored || sub.percentage !== undefined;
-                const percentage = isScored ? safeNumber(sub.percentage) : '—';
-                const scoreDisplay = isScored ? percentage + '%' : '<span style="color:#ffc107;">⏳ Pending</span>';
+                const percentage = isScored ? safeNumber(sub.percentage) : 0;
+                const scoreDisplay = isScored ? 
+                    '<strong style="font-size:18px;color:' + (sub.passed ? 'var(--success)' : 'var(--danger)') + ';">' + percentage + '%</strong>' : 
+                    '<span style="color:var(--warning);font-weight:700;">⏳ Unscored</span>';
+                
                 const statusBadge = isScored ? 
-                    '<span class="badge ' + (sub.passed ? 'pass' : 'fail') + '">' + (sub.passed ? 'PASSED' : 'FAILED') + '</span>' :
-                    '<span class="badge unscored">UNSCORED</span>';
+                    '<span class="badge ' + (sub.passed ? 'pass' : 'fail') + '">' + (sub.passed ? '✓ PASSED' : '✗ FAILED') + '</span>' :
+                    '<span class="badge unscored">⏳ PENDING</span>';
+                
                 const hasAudio = sub.audioBase64 && sub.audioBase64.length > 100;
                 const violations = safeNumber(sub.securityViolationCount);
-                const violationColor = violations > 10 ? '#dc3545' : violations > 5 ? '#ffc107' : '#28a745';
+                const violationColor = violations > 10 ? 'var(--danger)' : violations > 5 ? 'var(--warning)' : 'var(--success)';
                 const date = safeDate(sub.submittedAt);
                 
                 html += '<tr class="' + (!isScored ? 'unscored' : '') + '">';
                 html += '<td><strong>' + safeName + '</strong></td>';
                 html += '<td>' + safeEmail + '</td>';
-                html += '<td><strong style="font-size:16px;">' + scoreDisplay + '</strong></td>';
+                html += '<td>' + scoreDisplay + '</td>';
                 html += '<td>' + statusBadge + '</td>';
                 html += '<td><span class="badge ' + (hasAudio ? 'audio-yes' : 'audio-no') + '">' + (hasAudio ? '🎙️ YES' : '❌ NO') + '</span></td>';
-                html += '<td><strong style="color:' + violationColor + ';font-size:16px;">' + violations + '</strong></td>';
+                html += '<td><strong style="color:' + violationColor + ';font-size:18px;">' + violations + '</strong></td>';
                 html += '<td>' + date + '</td>';
                 html += '<td><button class="btn-view" onclick="viewSub(' + idx + ')">👁️ View</button></td>';
                 html += '</tr>';
@@ -946,175 +1276,226 @@
         }
 
         window.viewSub = function(idx) {
-            currentSub = allSubs[idx];
+            const sub = allSubs[idx];
+            const answers = normalizeAnswers(sub.answers);
+            const isScored = sub.scored || sub.percentage !== undefined;
+            const percentage = isScored ? safeNumber(sub.percentage) : 0;
+            const hasAudio = sub.audioBase64 && sub.audioBase64.length > 100;
             
-            const safeName = escapeHtml(currentSub.candidateData?.name || 'N/A');
-            const safeEmail = escapeHtml(currentSub.candidateData?.email || 'N/A');
-            const safePhone = escapeHtml(currentSub.candidateData?.phone || 'N/A');
-            const safeSubmissionId = escapeHtml(currentSub.submissionId || 'N/A');
-            const isScored = currentSub.scored || currentSub.percentage !== undefined;
+            let html = '';
 
-            let html = '<div class="info-section"><h3>👤 Candidate Information</h3>';
-            html += '<p><strong>Name:</strong> ' + safeName + '</p>';
-            html += '<p><strong>Email:</strong> ' + safeEmail + '</p>';
-            html += '<p><strong>Phone:</strong> ' + safePhone + '</p>';
-            html += '<p><strong>Submission ID:</strong> <code>' + safeSubmissionId + '</code></p></div>';
-
-            if (currentSub.audioBase64 && currentSub.audioBase64.length > 100) {
-                html += '<div class="audio-section"><h3>🎤 Audio Introduction</h3>';
-                html += '<div class="audio-player"><audio id="modalAudio" controls><source src="' + currentSub.audioBase64 + '" type="audio/webm"><source src="' + currentSub.audioBase64 + '" type="audio/mp4"></audio>';
-                html += '<button class="btn btn-success" onclick="downloadAudio()">📥 Download Audio</button></div></div>';
-            } else {
-                html += '<div style="background:#fff3cd;padding:20px;border-radius:12px;margin:20px 0;"><strong>⚠️ No Audio Recording</strong></div>';
-            }
-
-            html += '<div class="info-section"><h3>📊 Test Results</h3>';
-            if (isScored) {
-                html += '<p><strong>Score:</strong> ' + safeNumber(currentSub.percentage) + '% (' + safeNumber(currentSub.correctCount) + '/' + safeNumber(currentSub.totalMCQ) + ' correct)</p>';
-                html += '<p><strong>Status:</strong> <span class="badge ' + (currentSub.passed ? 'pass' : 'fail') + '">' + (currentSub.passed ? 'PASSED ✓' : 'FAILED ✗') + '</span></p>';
-            } else {
-                html += '<p style="background:#fff3cd;padding:15px;border-radius:8px;"><strong>⏳ Unscored</strong><br>Click "Calculate Scores" button to score.</p>';
-            }
-            html += '<p><strong>Time Taken:</strong> ' + escapeHtml(currentSub.timeTaken || 'N/A') + '</p>';
-            html += '<p><strong>Submitted:</strong> ' + safeDate(currentSub.submittedAt) + '</p></div>';
-
-            // ANSWERS SECTION - INCLUDING WRITTEN ANSWERS
-            html += '<div class="answers-section"><h3>📝 All Answers</h3>';
-            
-            if (currentSub.answers && currentSub.answers.length > 0) {
-                currentSub.answers.forEach((answer, index) => {
-                    const questionText = questions[index] || 'Question ' + (index + 1);
-                    const isWritten = index >= 18; // Questions 18 and 19 are written
-                    
-                    html += '<div class="answer-item ' + (isWritten ? 'written' : '') + '">';
-                    html += '<div class="answer-question">Q' + (index + 1) + ': ' + escapeHtml(questionText) + '</div>';
-                    
-                    if (isWritten) {
-                        // WRITTEN ANSWER
-                        if (answer && typeof answer === 'string' && answer.trim().length > 0) {
-                            const words = answer.trim().split(/\s+/).length;
-                            html += '<div class="answer-response"><strong>Response (' + words + ' words):</strong></div>';
-                            html += '<div class="answer-response written-text">' + escapeHtml(answer) + '</div>';
-                        } else {
-                            html += '<div class="answer-response" style="color:#999;"><em>No answer provided</em></div>';
-                        }
-                    } else {
-                        // MULTIPLE CHOICE ANSWER
-                        const options = questionOptions[index];
-                        if (options && answer !== null && answer !== undefined) {
-                            const answerText = options[answer] || 'Invalid answer';
-                            html += '<div class="answer-response"><strong>Answer:</strong> ' + escapeHtml(answerText) + '</div>';
-                            
-                            if (isScored && correctAnswers[index] !== undefined) {
-                                const isCorrect = answer === correctAnswers[index];
-                                if (isCorrect) {
-                                    html += '<div style="color:#28a745;font-weight:600;margin-top:8px;">✓ Correct</div>';
-                                } else {
-                                    const correctText = options[correctAnswers[index]];
-                                    html += '<div style="color:#dc3545;font-weight:600;margin-top:8px;">✗ Incorrect (Correct: ' + escapeHtml(correctText) + ')</div>';
-                                }
-                            }
-                        } else {
-                            html += '<div class="answer-response" style="color:#999;"><em>No answer provided</em></div>';
-                        }
-                    }
-                    
-                    html += '</div>';
-                });
-            } else {
-                html += '<p>No answers found.</p>';
-            }
-            
+            // CANDIDATE INFO
+            html += '<div class="info-grid">';
+            html += '<div class="info-card"><h3>Full Name</h3><p>' + escapeHtml(sub.candidateData?.name || 'N/A') + '</p></div>';
+            html += '<div class="info-card"><h3>Email Address</h3><p>' + escapeHtml(sub.candidateData?.email || 'N/A') + '</p></div>';
+            html += '<div class="info-card"><h3>Phone Number</h3><p>' + escapeHtml(sub.candidateData?.phone || 'N/A') + '</p></div>';
+            html += '<div class="info-card"><h3>Submission ID</h3><p style="font-family: monospace; font-size: 14px;">' + escapeHtml(sub.submissionId || 'N/A') + '</p></div>';
+            html += '<div class="info-card"><h3>Time Taken</h3><p>' + escapeHtml(sub.timeTaken || 'N/A') + ' minutes</p></div>';
+            html += '<div class="info-card"><h3>Submitted At</h3><p style="font-size: 14px;">' + safeDate(sub.submittedAt) + '</p></div>';
             html += '</div>';
+
+            // SCORE CARD
+            if (isScored) {
+                html += '<div class="score-card">';
+                html += '<div class="score-label">ASSESSMENT SCORE</div>';
+                html += '<div class="score-value">' + percentage + '%</div>';
+                html += '<div class="score-label">(' + (sub.correctCount || 0) + ' out of ' + (sub.totalMCQ || 18) + ' correct)</div>';
+                html += '<div class="score-label" style="margin-top: 15px; font-size: 18px;">' + (sub.passed ? '✅ PASSED' : '❌ FAILED') + '</div>';
+                html += '</div>';
+            }
+
+            // AUDIO SECTION
+            if (hasAudio) {
+                html += '<div class="audio-section">';
+                html += '<h3 style="color: var(--success); font-weight: 700; margin-bottom: 10px;">🎙️ Audio Introduction</h3>';
+                html += '<p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 15px;">Listen to the candidate\'s self-introduction</p>';
+                html += '<audio controls style="width: 100%; border-radius: 12px;">';
+                html += '<source src="' + sub.audioBase64 + '" type="audio/webm">';
+                html += '<source src="' + sub.audioBase64 + '" type="audio/mp4">';
+                html += 'Your browser does not support audio playback.';
+                html += '</audio>';
+                html += '</div>';
+            }
+
+            // ANSWERS SECTION
+            html += '<h2 class="section-title">📝 Assessment Answers</h2>';
+
+            for (let i = 0; i < answers.length; i++) {
+                const question = questions[i];
+                const userAnswer = answers[i];
+                
+                if (question.type === 'multiple-choice') {
+                    const correctAns = correctAnswers[i];
+                    const isCorrect = userAnswer === correctAns;
+                    
+                    html += '<div class="answer-item ' + (isScored ? (isCorrect ? 'correct' : 'incorrect') : '') + '">';
+                    html += '<div class="answer-header">';
+                    html += '<span class="question-label">Question ' + (i + 1) + ' of 20 (MCQ)</span>';
+                    if (isScored) {
+                        html += '<span class="answer-status ' + (isCorrect ? 'correct' : 'incorrect') + '">' + (isCorrect ? '✓ CORRECT' : '✗ INCORRECT') + '</span>';
+                    }
+                    html += '</div>';
+                    html += '<div class="question-text">' + escapeHtml(question.question) + '</div>';
+                    html += '<div class="answer-text">';
+                    html += '<strong>Candidate\'s Answer:</strong> ' + escapeHtml(question.options[userAnswer] || 'No answer provided');
+                    if (isScored && !isCorrect) {
+                        html += '<br><strong style="color: var(--success); margin-top: 8px; display: inline-block;">Correct Answer:</strong> ' + escapeHtml(question.options[correctAns]);
+                    }
+                    html += '</div>';
+                    html += '</div>';
+                } else {
+                    // Written answer
+                    const wordCount = countWords(userAnswer);
+                    html += '<div class="answer-item">';
+                    html += '<div class="answer-header">';
+                    html += '<span class="question-label">Question ' + (i + 1) + ' of 20 (WRITTEN)</span>';
+                    html += '</div>';
+                    html += '<div class="question-text">' + escapeHtml(question.question) + '</div>';
+                    html += '<div class="written-answer-box">' + escapeHtml(userAnswer || 'No answer provided') + '</div>';
+                    html += '<div class="word-count">Word Count: ' + wordCount + ' words ' + (wordCount >= 100 ? '✓' : '(Minimum: 100)') + '</div>';
+                    html += '</div>';
+                }
+            }
 
             // SECURITY SECTION
-            html += '<div class="info-section"><h3>🔒 Security Report</h3>';
-            html += '<p><strong>Total Violations:</strong> ' + safeNumber(currentSub.securityViolationCount) + '</p>';
-            html += '<p><strong>Tab Switches:</strong> ' + safeNumber(currentSub.tabSwitchCount) + '</p>';
-            if (currentSub.securityBreakdown) {
-                const sb = currentSub.securityBreakdown;
-                if (sb.pasteAttempts) html += '<p><strong>Paste Attempts:</strong> ' + safeNumber(sb.pasteAttempts) + '</p>';
-                if (sb.devToolsAttempts) html += '<p><strong>DevTools Attempts:</strong> ' + safeNumber(sb.devToolsAttempts) + '</p>';
-            }
+            const breakdown = sub.securityBreakdown || {
+                tabSwitches: sub.tabSwitchCount || 0,
+                pasteAttempts: 0,
+                rightClicks: 0,
+                devToolsAttempts: 0,
+                screenshotAttempts: 0,
+                keyboardShortcuts: 0
+            };
+
+            html += '<h2 class="section-title">🔒 Security Monitoring</h2>';
+            html += '<div class="security-section">';
+            html += '<h3 style="color: var(--danger); font-weight: 700; margin-bottom: 20px;">Total Violations: ' + (sub.securityViolationCount || 0) + '</h3>';
+            html += '<div class="security-grid">';
+            html += '<div class="security-item"><div class="count">' + (breakdown.tabSwitches || 0) + '</div><div class="label">Tab Switches</div></div>';
+            html += '<div class="security-item"><div class="count">' + (breakdown.pasteAttempts || 0) + '</div><div class="label">Paste Attempts</div></div>';
+            html += '<div class="security-item"><div class="count">' + (breakdown.rightClicks || 0) + '</div><div class="label">Right Clicks</div></div>';
+            html += '<div class="security-item"><div class="count">' + (breakdown.devToolsAttempts || 0) + '</div><div class="label">DevTools Attempts</div></div>';
+            html += '<div class="security-item"><div class="count">' + (breakdown.screenshotAttempts || 0) + '</div><div class="label">Screenshot Attempts</div></div>';
+            html += '<div class="security-item"><div class="count">' + (breakdown.keyboardShortcuts || 0) + '</div><div class="label">Keyboard Shortcuts</div></div>';
+            html += '</div>';
             html += '</div>';
 
-            html += '<div style="text-align:center;margin-top:30px;"><button class="btn btn-success" onclick="downloadReport()">📥 Download Full Report</button></div>';
+            // DEVICE INFO
+            if (sub.deviceInfo) {
+                html += '<div class="device-info">';
+                html += '<h3 style="color: var(--primary); font-weight: 700; margin-bottom: 15px;">💻 Device Information</h3>';
+                html += '<p><strong>User Agent:</strong> ' + escapeHtml(sub.deviceInfo.userAgent || 'N/A') + '</p>';
+                html += '<p><strong>Platform:</strong> ' + escapeHtml(sub.deviceInfo.platform || 'N/A') + '</p>';
+                html += '<p><strong>Screen Resolution:</strong> ' + escapeHtml(sub.deviceInfo.screenResolution || 'N/A') + '</p>';
+                html += '<p><strong>Timezone:</strong> ' + escapeHtml(sub.deviceInfo.timezone || 'N/A') + '</p>';
+                html += '<p><strong>Language:</strong> ' + escapeHtml(sub.deviceInfo.language || 'N/A') + '</p>';
+                html += '</div>';
+            }
+
+            // DOWNLOAD BUTTON
+            html += '<button class="download-btn" onclick="downloadReport(' + idx + ')">📥 Download Full Report (TXT)</button>';
 
             document.getElementById('modalBody').innerHTML = html;
             document.getElementById('detailModal').classList.add('show');
-
-            setTimeout(() => {
-                const audio = document.getElementById('modalAudio');
-                if (audio) audio.load();
-            }, 100);
         };
 
         window.closeModal = function() {
-            const audio = document.getElementById('modalAudio');
-            if (audio) {
-                audio.pause();
-                audio.currentTime = 0;
-            }
             document.getElementById('detailModal').classList.remove('show');
         };
 
+        // Close modal when clicking outside
         document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
+            if (e.target === this) {
+                closeModal();
+            }
         });
 
-        window.downloadAudio = function() {
-            if (!currentSub || !currentSub.audioBase64) {
-                alert('No audio available');
-                return;
-            }
-            const safeName = (currentSub.candidateData?.name || 'candidate').replace(/[^a-z0-9]/gi, '_');
-            const link = document.createElement('a');
-            link.href = currentSub.audioBase64;
-            link.download = safeName + '_Audio.webm';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        window.downloadReport = function() {
-            if (!currentSub) return;
+        window.downloadReport = function(idx) {
+            const sub = allSubs[idx];
+            const answers = normalizeAnswers(sub.answers);
+            const isScored = sub.scored || sub.percentage !== undefined;
             
-            let report = '═══════════════════════════════════════\n';
-            report += '   ASSESSMENT REPORT\n';
-            report += '═══════════════════════════════════════\n\n';
-            report += 'Candidate: ' + (currentSub.candidateData?.name || 'N/A') + '\n';
-            report += 'Email: ' + (currentSub.candidateData?.email || 'N/A') + '\n';
-            report += 'Phone: ' + (currentSub.candidateData?.phone || 'N/A') + '\n';
-            report += 'Submission ID: ' + (currentSub.submissionId || 'N/A') + '\n\n';
+            let report = '='.repeat(80) + '\n';
+            report += 'CREATIVE LABS - CUSTOMER SERVICE ASSESSMENT REPORT\n';
+            report += '='.repeat(80) + '\n\n';
             
-            if (currentSub.scored || currentSub.percentage) {
-                report += 'Score: ' + safeNumber(currentSub.percentage) + '%\n';
-                report += 'Status: ' + (currentSub.passed ? 'PASSED' : 'FAILED') + '\n';
+            report += '📋 CANDIDATE INFORMATION\n';
+            report += '-'.repeat(80) + '\n';
+            report += 'Name: ' + (sub.candidateData?.name || 'N/A') + '\n';
+            report += 'Email: ' + (sub.candidateData?.email || 'N/A') + '\n';
+            report += 'Phone: ' + (sub.candidateData?.phone || 'N/A') + '\n';
+            report += 'Submission ID: ' + (sub.submissionId || 'N/A') + '\n';
+            report += 'Submitted At: ' + safeDate(sub.submittedAt) + '\n';
+            report += 'Time Taken: ' + (sub.timeTaken || 'N/A') + ' minutes\n\n';
+            
+            if (isScored) {
+                report += '🎯 ASSESSMENT SCORE\n';
+                report += '-'.repeat(80) + '\n';
+                report += 'Score: ' + safeNumber(sub.percentage) + '%\n';
+                report += 'Correct Answers: ' + (sub.correctCount || 0) + ' out of ' + (sub.totalMCQ || 18) + '\n';
+                report += 'Result: ' + (sub.passed ? 'PASSED ✓' : 'FAILED ✗') + '\n\n';
             }
             
-            report += '\n═══════════════════════════════════════\n';
-            report += 'ANSWERS\n';
-            report += '═══════════════════════════════════════\n\n';
+            report += '📝 DETAILED ANSWERS\n';
+            report += '-'.repeat(80) + '\n\n';
             
-            if (currentSub.answers) {
-                currentSub.answers.forEach((answer, index) => {
-                    report += 'Q' + (index + 1) + ': ' + (questions[index] || 'Question ' + (index + 1)) + '\n';
-                    if (index >= 18) {
-                        report += 'Answer: ' + (answer || 'No answer') + '\n\n';
-                    } else {
-                        const opts = questionOptions[index];
-                        report += 'Answer: ' + (opts && opts[answer] ? opts[answer] : 'No answer') + '\n\n';
+            for (let i = 0; i < answers.length; i++) {
+                const question = questions[i];
+                const userAnswer = answers[i];
+                
+                report += 'Question ' + (i + 1) + ' of 20:\n';
+                report += question.question + '\n\n';
+                
+                if (question.type === 'multiple-choice') {
+                    const correctAns = correctAnswers[i];
+                    const isCorrect = userAnswer === correctAns;
+                    
+                    report += 'Candidate\'s Answer: ' + (question.options[userAnswer] || 'No answer') + '\n';
+                    if (isScored) {
+                        report += 'Status: ' + (isCorrect ? 'CORRECT ✓' : 'INCORRECT ✗') + '\n';
+                        if (!isCorrect) {
+                            report += 'Correct Answer: ' + question.options[correctAns] + '\n';
+                        }
                     }
-                });
+                } else {
+                    report += 'Written Response:\n' + (userAnswer || 'No answer provided') + '\n';
+                    report += 'Word Count: ' + countWords(userAnswer) + ' words\n';
+                }
+                
+                report += '\n' + '-'.repeat(80) + '\n\n';
             }
             
-            report += '═══════════════════════════════════════\n';
+            report += '🔒 SECURITY MONITORING\n';
+            report += '-'.repeat(80) + '\n';
+            report += 'Total Violations: ' + (sub.securityViolationCount || 0) + '\n\n';
             
-            const blob = new Blob([report], {type: 'text/plain'});
+            const breakdown = sub.securityBreakdown || {};
+            report += 'Tab Switches: ' + (breakdown.tabSwitches || 0) + '\n';
+            report += 'Paste Attempts: ' + (breakdown.pasteAttempts || 0) + '\n';
+            report += 'Right Clicks: ' + (breakdown.rightClicks || 0) + '\n';
+            report += 'DevTools Attempts: ' + (breakdown.devToolsAttempts || 0) + '\n';
+            report += 'Screenshot Attempts: ' + (breakdown.screenshotAttempts || 0) + '\n';
+            report += 'Keyboard Shortcuts: ' + (breakdown.keyboardShortcuts || 0) + '\n\n';
+            
+            if (sub.deviceInfo) {
+                report += '💻 DEVICE INFORMATION\n';
+                report += '-'.repeat(80) + '\n';
+                report += 'User Agent: ' + (sub.deviceInfo.userAgent || 'N/A') + '\n';
+                report += 'Platform: ' + (sub.deviceInfo.platform || 'N/A') + '\n';
+                report += 'Screen Resolution: ' + (sub.deviceInfo.screenResolution || 'N/A') + '\n';
+                report += 'Timezone: ' + (sub.deviceInfo.timezone || 'N/A') + '\n';
+                report += 'Language: ' + (sub.deviceInfo.language || 'N/A') + '\n\n';
+            }
+            
+            report += '='.repeat(80) + '\n';
+            report += 'END OF REPORT\n';
+            report += '='.repeat(80);
+            
+            const blob = new Blob([report], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = (currentSub.candidateData?.name || 'report').replace(/[^a-z0-9]/gi, '_') + '_Report.txt';
+            a.download = 'Assessment_Report_' + (sub.candidateData?.name || 'Candidate').replace(/\s+/g, '_') + '_' + Date.now() + '.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1126,38 +1507,48 @@
                 alert('No submissions to download');
                 return;
             }
-
-            let report = '═══════════════════════════════════════\n';
-            report += '   ALL SUBMISSIONS SUMMARY\n';
-            report += '═══════════════════════════════════════\n\n';
-            report += 'Generated: ' + new Date().toLocaleString() + '\n';
-            report += 'Total: ' + allSubs.length + '\n\n';
-
-            allSubs.forEach((sub, idx) => {
-                report += '─────────────────────────────────────\n';
-                report += (idx + 1) + '. ' + (sub.candidateData?.name || 'N/A') + '\n';
-                report += '   Email: ' + (sub.candidateData?.email || 'N/A') + '\n';
-                if (sub.scored || sub.percentage) {
-                    report += '   Score: ' + safeNumber(sub.percentage) + '%\n';
-                    report += '   Status: ' + (sub.passed ? 'PASSED' : 'FAILED') + '\n';
-                }
-                report += '\n';
+            
+            let csv = 'Name,Email,Phone,Submission ID,Score,Status,Correct Answers,Total Questions,Time Taken,Violations,Has Audio,Submitted At\n';
+            
+            allSubs.forEach(sub => {
+                const isScored = sub.scored || sub.percentage !== undefined;
+                const row = [
+                    '"' + (sub.candidateData?.name || 'N/A').replace(/"/g, '""') + '"',
+                    '"' + (sub.candidateData?.email || 'N/A').replace(/"/g, '""') + '"',
+                    '"' + (sub.candidateData?.phone || 'N/A').replace(/"/g, '""') + '"',
+                    '"' + (sub.submissionId || 'N/A').replace(/"/g, '""') + '"',
+                    isScored ? safeNumber(sub.percentage) + '%' : 'Unscored',
+                    isScored ? (sub.passed ? 'PASSED' : 'FAILED') : 'PENDING',
+                    isScored ? (sub.correctCount || 0) : 'N/A',
+                    isScored ? (sub.totalMCQ || 18) : 'N/A',
+                    (sub.timeTaken || 'N/A'),
+                    (sub.securityViolationCount || 0),
+                    (sub.audioBase64 && sub.audioBase64.length > 100) ? 'Yes' : 'No',
+                    '"' + safeDate(sub.submittedAt) + '"'
+                ].join(',');
+                csv += row + '\n';
             });
-
-            report += '═══════════════════════════════════════\n';
-
-            const blob = new Blob([report], {type: 'text/plain'});
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'All_Submissions_' + Date.now() + '.txt';
+            a.download = 'All_Submissions_' + Date.now() + '.csv';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            
+            alert('✅ Downloaded ' + allSubs.length + ' submissions as CSV');
         };
 
-        console.log('✅ Admin panel initialized');
+        console.log('✅ Creative Labs Admin Panel Initialized');
+        console.log('✅ Detailed View Modal Ready');
+
+        // Make functions globally accessible
+        window.questions = questions;
+        window.correctAnswers = correctAnswers;
+        window.allSubs = allSubs;
     </script>
 </body>
 </html>
